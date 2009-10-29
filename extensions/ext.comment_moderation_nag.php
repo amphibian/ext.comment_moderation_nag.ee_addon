@@ -9,7 +9,7 @@ class Comment_moderation_nag
 {
 	var $settings        = array();
 	var $name            = 'Comment Moderation Nag';
-	var $version         = '1.0';
+	var $version         = '1.0.1';
 	var $description     = 'Prominently nags administrators to approve or delete pending comments.';
 	var $settings_exist  = 'n';
 	var $docs_url        = '';
@@ -40,11 +40,12 @@ class Comment_moderation_nag
 			
 			if($total)
 			{	
+				$c_word = ($total == 1) ? ' comment requires' : ' comments require';
 				$find= "<div id='contentNB'>";
 				$replace = "
 				<div id='contentNB'>
 				<div class='box'>
-					<span class='highlight_bold'>".$total." comments require moderation. </span>
+					<span class='highlight_bold'>".$total.$c_word." moderation. </span>
 					<a href='".BASE.AMP."C=edit&amp;M=view_comments&amp;validate=1'>
 					Click here to approve or delete pending comments.</a>
 					</span>
