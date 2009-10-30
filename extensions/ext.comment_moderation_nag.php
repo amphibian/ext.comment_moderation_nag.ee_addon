@@ -13,7 +13,18 @@ class Comment_moderation_nag
 	var $description     = 'Prominently nags administrators to approve or delete pending comments.';
 	var $settings_exist  = 'n';
 	var $docs_url        = '';
+
 	
+	// -------------------------------
+	//   Constructor - Extensions use this for settings
+	// -------------------------------
+	
+	function Comment_moderation_nag($settings='')
+	{
+	    $this->settings = $settings;
+	}
+	// END
+
 
 	function show_full_control_panel_end($out)
 	{
