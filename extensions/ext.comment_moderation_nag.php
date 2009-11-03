@@ -12,7 +12,7 @@ class Comment_moderation_nag
 	var $version         = '1.0.2';
 	var $description     = 'Prominently nags administrators to approve or delete pending comments.';
 	var $settings_exist  = 'n';
-	var $docs_url        = '';
+	var $docs_url        = 'http://github.com/amphibian/ext.comment_moderation_nag.ee_addon';
 
 	
 	// -------------------------------
