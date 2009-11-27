@@ -9,7 +9,7 @@ class Comment_moderation_nag
 {
 	var $settings        = array();
 	var $name            = 'Comment Moderation Nag';
-	var $version         = '1.0.2';
+	var $version         = '1.0.3';
 	var $description     = 'Prominently nags administrators to approve or delete pending comments.';
 	var $settings_exist  = 'n';
 	var $docs_url        = 'http://github.com/amphibian/ext.comment_moderation_nag.ee_addon';
@@ -43,36 +43,32 @@ class Comment_moderation_nag
 				&& isset($_GET['validate']) && $_GET['validate'] == 1)
 				return $out;
 				
-			// Only proceed if the Comment module is actually insatlled
-			$module_check = $DB->query("SELECT module_name FROM exp_modules WHERE module_name = 'Comment'");			
-			if($module_check->num_rows > 0)
-			{
-				$query = $DB->query("
-					SELECT count(comment_id) AS count 
-					FROM exp_comments 
-					WHERE status = 'c' 
-					AND site_id = '".$DB->escape_str($PREFS->ini('site_id')) ."'
-				");
-				$total = $query->row['count'];
-				
-				// Lastly, only display the notice if there are comments to moderate
-				if($total)
-				{	
-					$LANG->fetch_language_file('comment_moderation_nag');
-					$c_word = ($total == 1) ? $LANG->line('comment_requires') : $LANG->line('comments_require');
-					$find= "<div id='contentNB'>";
-					$replace = "
-					<div id='contentNB'>
-					<div class='box'>
-						<span class='highlight_bold'>".$total." ".$c_word." ".$LANG->line('moderation').". </span>
-						<a href='".BASE.AMP."C=edit&amp;M=view_comments&amp;validate=1'>".
-						$LANG->line('click_to_moderate').
-						".</a>
-						</span>
-					</div>
-					";
-					$out = str_replace($find, $replace, $out);
-				}
+			// Check for closed comments
+			$query = $DB->query("
+				SELECT count(comment_id) AS count 
+				FROM exp_comments 
+				WHERE status = 'c' 
+				AND site_id = '".$DB->escape_str($PREFS->ini('site_id')) ."'
+			");
+			$total = $query->row['count'];
+			
+			// Lastly, only display the notice if there are comments to moderate
+			if($total)
+			{	
+				$LANG->fetch_language_file('comment_moderation_nag');
+				$c_word = ($total == 1) ? $LANG->line('comment_requires') : $LANG->line('comments_require');
+				$find= "<div id='contentNB'>";
+				$replace = "
+				<div id='contentNB'>
+				<div class='box'>
+					<span class='highlight_bold'>".$total." ".$c_word." ".$LANG->line('moderation').". </span>
+					<a href='".BASE.AMP."C=edit&amp;M=view_comments&amp;validate=1'>".
+					$LANG->line('click_to_moderate').
+					".</a>
+					</span>
+				</div>
+				";
+				$out = str_replace($find, $replace, $out);
 			}
 		}
 		return $out;
